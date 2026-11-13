@@ -10,7 +10,7 @@ Hexo + [Fluid](https://github.com/fluid-dev/hexo-theme-fluid) 主题的站点骨
 
 ## 本地跑起来
 
-需要 Node.js >= 20.19.0（Hexo 8 的要求）。
+需要 Node.js >= 18。
 
 ```bash
 npm install
@@ -26,20 +26,30 @@ npm run clean        # 清掉 public/ 和缓存
 
 ## 部署到 EdgeOne
 
-EdgeOne Makers（原 EdgeOne Pages）控制台 → 导入 Git 仓库 → 选本仓库，然后：
+控制台 → 导入 Git 仓库 → 选本仓库即可。**构建参数全部写在仓库根目录的 `edgeone.json` 里**，不用在控制台手填：
 
-| 配置项 | 值 |
-| --- | --- |
-| 构建命令 | `hexo generate`（也可以用 `npm run build`，等价） |
-| 输出目录 | `public` |
+```json
+{
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
+  "outputDirectory": "./public",
+  "nodeVersion": "22.11.0"
+}
+```
 
-Hexo 在 EdgeOne 的「Other Frameworks」文档里有官方预设，就是上面这两个值，不需要 `edgeone.json`。
-构建完成后产物是纯静态文件，CDN 和 HTTPS 由 EdgeOne 自动处理。
+### 踩过的坑（重要，别再踩一次）
 
-> 唯一要留意的：Hexo 8 要求 Node >= 20.19.0。EdgeOne 构建机的 Node 版本我没法从文档确认，
-> 仓库里的 `.nvmrc` 只是给本地和 CI 参考。万一构建日志报 Node 版本不够，两个办法：
-> 在 EdgeOne 环境变量里指定 Node 版本，或者把 `package.json` 里的 `"hexo": "^8.0.0"` 降到 `"^7.3.0"`
-> （Hexo 7 只要 Node >= 14，站点配置和 Fluid 主题都兼容，本机实测两版都能出站）。
+第一次部署失败，根因是之前仓库里放了个 `.nvmrc` 写着 `20.19.0`：
+
+- EdgeOne **只预装**这几个 Node 版本：`14.21.3`、`16.20.2`、`18.20.4`、`20.18.0`、`22.11.0`、`22.17.1`、`22.21.1`、`24.5.0`、`24.11.0`、`24.18.0`。
+- 仓库根目录有 `.nvmrc` 时，构建机会走 nvm 去**临时下载**指定版本；官方文档明确写了这一步会「排除对应的包管理器」。
+- 我写的 `20.19.0` 不在预装列表里 → 触发下载 → 安装环节崩掉。
+
+现在三处一起改掉了，互相兜底：
+
+1. 删掉了 `.nvmrc`，改由 `edgeone.json` 的 `nodeVersion` 显式指定预装版本 `22.11.0`；
+2. `hexo` 从 `^8.0.0` 降到 `^7.3.0`（Hexo 8 要求 Node >= 20.19.0，Hexo 7 只要 >= 14）。这样即使控制台把 Node 版本改回 18 或 20.18，也照样能构建；
+3. 显式写了 `installCommand`，不依赖平台自动探测包管理器。
 
 ## 以后要改的地方（TODO）
 
@@ -51,13 +61,13 @@ Hexo 在 EdgeOne 的「Other Frameworks」文档里有官方预设，就是上�
 ## 目录说明
 
 ```
+edgeone.json           EdgeOne 构建配置（构建命令 / 输出目录 / Node 版本）
 _config.yml            站点配置（Hexo）
 _config.fluid.yml      主题配置（Fluid，覆盖 node_modules 里的默认值）
 package.json           依赖与脚本
 scaffolds/             新建文章/页面的模板
 source/_posts/         文章
 source/                静态资源（图片等）
-.nvmrc                 Node 版本
 ```
 
 ## 许可

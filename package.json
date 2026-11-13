@@ -11,10 +11,10 @@
     "deploy": "hexo deploy"
   },
   "hexo": {
-    "version": "8.1.2"
+    "version": "7.3.0"
   },
   "dependencies": {
-    "hexo": "^8.0.0",
+    "hexo": "^7.3.0",
     "hexo-generator-archive": "^2.0.0",
     "hexo-generator-category": "^2.0.0",
     "hexo-generator-index": "^4.0.0",
@@ -26,6 +26,6 @@
     "hexo-theme-fluid": "^1.9.9"
   },
   "engines": {
-    "node": ">=20.19.0"
+    "node": ">=18"
   }
 }
