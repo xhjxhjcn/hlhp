@@ -30,11 +30,16 @@ EdgeOne Makers（原 EdgeOne Pages）控制台 → 导入 Git 仓库 → 选本�
 
 | 配置项 | 值 |
 | --- | --- |
-| 构建命令 | `npm run build` |
+| 构建命令 | `hexo generate`（也可以用 `npm run build`，等价） |
 | 输出目录 | `public` |
-| Node 版本 | 20.19.0 或更高（仓库里的 `.nvmrc` 已指定） |
 
-零配置不需要 `edgeone.json`。构建完成后产物是纯静态文件，CDN 和 HTTPS 由 EdgeOne 自动处理。
+Hexo 在 EdgeOne 的「Other Frameworks」文档里有官方预设，就是上面这两个值，不需要 `edgeone.json`。
+构建完成后产物是纯静态文件，CDN 和 HTTPS 由 EdgeOne 自动处理。
+
+> 唯一要留意的：Hexo 8 要求 Node >= 20.19.0。EdgeOne 构建机的 Node 版本我没法从文档确认，
+> 仓库里的 `.nvmrc` 只是给本地和 CI 参考。万一构建日志报 Node 版本不够，两个办法：
+> 在 EdgeOne 环境变量里指定 Node 版本，或者把 `package.json` 里的 `"hexo": "^8.0.0"` 降到 `"^7.3.0"`
+> （Hexo 7 只要 Node >= 14，站点配置和 Fluid 主题都兼容，本机实测两版都能出站）。
 
 ## 以后要改的地方（TODO）
 
