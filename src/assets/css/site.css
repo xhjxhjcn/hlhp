@@ -2743,6 +2743,10 @@ button {
 }
 
 @media (max-width: 960px) {
+  :root {
+    --page-header-space: 56px;
+  }
+
   .qc-page {
     padding: 14px;
   }

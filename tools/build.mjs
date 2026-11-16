@@ -566,7 +566,7 @@ function renderJournal() {
     }) +
     `    <main class="content-page" data-journal>
       ${topbar("journal")}
-      ${headingBar("拾记", journal.posts.length, "条内容")}
+      ${headingBar("拾记", journal.posts.length + journal.whispers.length, "条内容")}
 
       <aside class="content-info-card" aria-label="拾记栏目详情">
         <header>

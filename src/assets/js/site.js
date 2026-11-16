@@ -1,4 +1,4 @@
-/* Shared behaviour: mobile nav, header hide-on-scroll, to-top, focus traps. */
+﻿/* Shared behaviour: mobile nav, header hide-on-scroll, to-top, focus traps. */
 (function () {
   "use strict";
 
@@ -44,7 +44,10 @@
 
   /* ------------------------------------------------ hide header on scroll */
   var topbar = doc.querySelector("[data-topbar]");
-  if (topbar && !doc.documentElement.hasAttribute("data-keep-header")) {
+  // Section pages pin a second heading bar right below the topbar; hiding only
+  // the topbar would leave that bar floating with a gap, so keep it in place.
+  var pinnedHeading = doc.querySelector(".page-heading-bar");
+  if (topbar && !pinnedHeading && !doc.documentElement.hasAttribute("data-keep-header")) {
     var lastY = window.scrollY;
     var ticking = false;
 
