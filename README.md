@@ -1,75 +1,119 @@
 # hlhp
 
-Hexo + [Fluid](https://github.com/fluid-dev/hexo-theme-fluid) 主题的站点骨架，**目前是完全未改动的官方样板**，等以后确定了再往里填内容。
+一个**纯静态**的个人博客：主页、随影、拾记、关于。
 
-## 现在是什么状态
+没有后端、没有数据库、没有登录注册、没有留言或评论——所有页面在构建时生成成普通 HTML，扔到任何静态托管上就能跑。
 
-- 站点配置 `_config.yml` 全部保留 Hexo 官方默认值（`title: Hexo`、`author: John Doe`、`url: http://example.com`）。
-- 主题配置 `_config.fluid.yml` 是 Fluid 官方 `_config.yml` 的完整拷贝，一个值都没动。改主题就改这个文件，**不要去动 `node_modules` 里的主题**。
-- 唯一的内容是一篇 Hexo 自带的 `Hello World` 示例文章。
+设计语言参考了「纸张 + 墨色」的编辑排版：米白纸面、鼠尾草绿、手写体标题、便签与胶带、和纸质感的分隔线。
 
-## 本地跑起来
+## 页面
 
-需要 Node.js >= 18。
+| 路径 | 内容 |
+| --- | --- |
+| `/` | 主页：公告便签、更新日历、统计、头条轮播、拍立得、新近文章、旅途条带 |
+| `/moments.html` | 随影：瀑布流照片墙 + 点开看大图（键盘 ←/→/Esc、触摸滑动） |
+| `/journal.html` | 拾记：文章卡片 + 絮语便签，可切换列表/卡片模式 |
+| `/journal/<slug>.html` | 文章详情：封面、摘要、目录、正文 |
+| `/about.html` | 关于：自述、作者介绍、版权声明、站点更新日志弹窗 |
+
+额外生成：`404.html`、`robots.txt`、`feed.xml`。
+
+**已移除**：登录 / 注册、留言板、评论、点赞上报、友链申请、仓库页、随行地图、3D 模型、足迹统计等一切依赖后台的功能。点赞、浏览量这些数字只作为静态文案展示。
+
+## 本地开发
+
+需要 Node.js >= 18（构建脚本没有任何第三方依赖）。
 
 ```bash
-npm install
-npm run dev          # http://localhost:4000
+npm run build     # 生成 dist/
+npm run dev       # 预览 dist/，默认 http://127.0.0.1:4173
+npm run clean     # 清掉 dist/
 ```
 
-## 构建
+## 改内容
 
-```bash
-npm run build        # 产物在 public/
-npm run clean        # 清掉 public/ 和缓存
-```
+内容全部在 `src/data/`，改完重新 `npm run build` 即可：
 
-## 部署到 EdgeOne
+| 文件 | 管什么 |
+| --- | --- |
+| `src/data/site.json` | 站点标题、导航、公告、统计、头条轮播、旅途条带、页脚 |
+| `src/data/photos.json` | 随影：每张照片的标题、日期、地点、相机参数、比例、描述 |
+| `src/data/journal.json` | 拾记：文章（正文是分块数组）和絮语 |
+| `src/data/about.json` | 关于页：自述、作者介绍、版权、更新日志 |
 
-控制台 → 导入 Git 仓库 → 选本仓库即可。**构建参数全部写在仓库根目录的 `edgeone.json` 里**，不用在控制台手填：
+### 加一篇拾记
+
+在 `src/data/journal.json` 的 `posts` 里追加一项：
 
 ```json
 {
-  "installCommand": "npm install",
+  "id": "my-post",
+  "slug": "my-post",
+  "title": "标题",
+  "date": "2026-11-20",
+  "dateText": "2026年11月20日",
+  "kind": "article",
+  "cover": "/assets/img/covers/cover-01.webp",
+  "summary": "列表页显示的摘要",
+  "tags": ["标签"],
+  "words": 1200,
+  "views": 0,
+  "likes": 0,
+  "sections": [{ "id": "part-1", "title": "小标题" }],
+  "body": [
+    { "type": "p", "text": "正文段落。" },
+    { "type": "h2", "id": "part-1", "text": "小标题" },
+    { "type": "figure", "src": "/assets/img/misc/hero.webp", "caption": "图注" },
+    { "type": "quote", "text": "引用。" }
+  ]
+}
+```
+
+`sections` 里的 `id` 要和正文里的 `h2` 的 `id` 对上，右侧目录和滚动高亮才准。
+
+### 加一张随影
+
+把图片放进 `src/assets/img/photos/`，然后在 `src/data/photos.json` 里追加一项，`ratio` 写图片的宽高比（如 `"4 / 5"`、`"3 / 4"`、`"16 / 9"`），构建时会按图片比例自动做瀑布流分栏。
+
+## 图片与资源
+
+- 配图是脚本生成的抽象占位图（`src/assets/img/`），换成自己的照片直接覆盖即可。
+- `src/assets/img/brand-logo.svg` 是站点标志，`favicon.svg` 是浏览器图标。
+- 手写体是 `src/assets/fonts/SmileySans-Oblique.woff2`（得意黑，SIL OFL 1.1）。
+- 正文用的是系统字体栈（宋体 / PingFang / 微软雅黑），没有额外字体依赖。
+
+## 部署到 EdgeOne
+
+构建参数写在仓库根的 `edgeone.json` 里，控制台不用手填：
+
+```json
+{
+  "installCommand": "npm install --no-audit --no-fund",
   "buildCommand": "npm run build",
-  "outputDirectory": "./public",
+  "outputDirectory": "./dist",
   "nodeVersion": "22.11.0"
 }
 ```
 
-### 踩过的坑（重要，别再踩一次）
+> Node 版本必须选 EdgeOne **预装**的那几个（`14.21.3`、`16.20.2`、`18.20.4`、`20.18.0`、`22.11.0`、`22.17.1`、`22.21.1`、`24.5.0`、`24.11.0`、`24.18.0`）。别放 `.nvmrc`，写了会触发构建机临时下载你指定的版本，容易直接崩在安装环节。
 
-第一次部署失败，根因是之前仓库里放了个 `.nvmrc` 写着 `20.19.0`：
+因为是纯静态产物，`dist/` 里没有服务端逻辑，部署到 GitHub Pages、Vercel、Netlify、Cloudflare Pages 也都能直接用。
 
-- EdgeOne **只预装**这几个 Node 版本：`14.21.3`、`16.20.2`、`18.20.4`、`20.18.0`、`22.11.0`、`22.17.1`、`22.21.1`、`24.5.0`、`24.11.0`、`24.18.0`。
-- 仓库根目录有 `.nvmrc` 时，构建机会走 nvm 去**临时下载**指定版本；官方文档明确写了这一步会「排除对应的包管理器」。
-- 我写的 `20.19.0` 不在预装列表里 → 触发下载 → 安装环节崩掉。
-
-现在三处一起改掉了，互相兜底：
-
-1. 删掉了 `.nvmrc`，改由 `edgeone.json` 的 `nodeVersion` 显式指定预装版本 `22.11.0`；
-2. `hexo` 从 `^8.0.0` 降到 `^7.3.0`（Hexo 8 要求 Node >= 20.19.0，Hexo 7 只要 >= 14）。这样即使控制台把 Node 版本改回 18 或 20.18，也照样能构建；
-3. 显式写了 `installCommand`，不依赖平台自动探测包管理器。
-
-## 以后要改的地方（TODO）
-
-1. **`_config.yml`** —— 站点标题、副标题、作者、语言（`language: zh-CN`）、`url`（改成最终域名，否则 canonical 和 RSS 里是 `example.com`）、`timezone: Asia/Shanghai`。
-2. **`_config.fluid.yml`** —— 导航栏标题 `navbar.blog_title`、菜单项、首页大图（`index.banner_img`）、头像、配色、页脚备案号。
-3. **`source/_posts/`** —— 删掉示例文章，换成真内容。新建文章用 `npx hexo new "标题"`。
-4. **`source/about/index.md`** —— 导航栏有 About，需要自己建这个页面：`npx hexo new page about`。
-
-## 目录说明
+## 目录
 
 ```
-edgeone.json           EdgeOne 构建配置（构建命令 / 输出目录 / Node 版本）
-_config.yml            站点配置（Hexo）
-_config.fluid.yml      主题配置（Fluid，覆盖 node_modules 里的默认值）
-package.json           依赖与脚本
-scaffolds/             新建文章/页面的模板
-source/_posts/         文章
-source/                静态资源（图片等）
+edgeone.json            EdgeOne 构建配置
+package.json            脚本（无运行时依赖）
+tools/build.mjs         构建：JSON + 资源 → dist/
+tools/serve.mjs         本地预览服务器
+src/data/               内容源（改这里）
+src/assets/css/site.css 全部样式
+src/assets/js/          交互脚本（原生 JS，无框架）
+src/assets/img/         图片资源
+src/assets/fonts/       字体
+dist/                   构建产物（已 gitignore）
 ```
 
 ## 许可
 
-主题 Fluid 使用 GPL-3.0，原样保留在 `LICENSE-fluid.txt`。
+站内文字与图片的版权声明见 `/about.html`。字体各自遵循其原始许可。

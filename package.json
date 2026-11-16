@@ -1,29 +1,13 @@
 {
   "name": "hlhp",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
-  "description": "Hexo + Fluid theme",
+  "description": "Static paper-and-ink personal blog: home, moments, journal, about.",
+  "type": "module",
   "scripts": {
-    "build": "hexo generate",
-    "clean": "hexo clean",
-    "dev": "hexo server",
-    "server": "hexo server",
-    "deploy": "hexo deploy"
-  },
-  "hexo": {
-    "version": "7.3.0"
-  },
-  "dependencies": {
-    "hexo": "^7.3.0",
-    "hexo-generator-archive": "^2.0.0",
-    "hexo-generator-category": "^2.0.0",
-    "hexo-generator-index": "^4.0.0",
-    "hexo-generator-tag": "^2.0.0",
-    "hexo-renderer-ejs": "^2.0.0",
-    "hexo-renderer-marked": "^7.0.0",
-    "hexo-renderer-stylus": "^3.0.1",
-    "hexo-server": "^3.0.0",
-    "hexo-theme-fluid": "^1.9.9"
+    "build": "node tools/build.mjs",
+    "dev": "node tools/serve.mjs",
+    "clean": "node -e \"import('node:fs').then(f=>f.rmSync('dist',{recursive:true,force:true}))\""
   },
   "engines": {
     "node": ">=18"

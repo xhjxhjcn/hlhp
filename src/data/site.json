@@ -1,0 +1,64 @@
+{
+  "brand": "JUHUAYU",
+  "brandCn": "菊花小枪王",
+  "handle": "juhua_yu",
+  "title": "juhua_yu — 晴天的周末在去学校自习的路上",
+  "description": "一个普通工程师的随影与拾记。",
+  "eyebrow": "TIDES OF LIFE",
+  "headlines": [
+    "愿拥有说走就走的勇气与底气。",
+    "生活偶尔酸涩，咱们还有糖和勺子。",
+    "静一点，看见正在发生的事。",
+    "把路途，连成故事。"
+  ],
+  "subline": "对生活充满期待与热爱，我希望你也是，我的朋友！",
+  "notice": {
+    "label": "01 / A SMALL NOTE",
+    "title": "网站公告",
+    "text": "欢迎来到我的小站！\n哎～算了，不管写什么，反正你又不会看！（在墙角画圈圈中……）\n这里只是一些随手拍下的光和随手记下的话，慢慢看，不着急。"
+  },
+  "stats": [
+    { "value": "88", "label": "运行天数" },
+    { "value": "6", "label": "发布文章总数" },
+    { "value": "12", "label": "发布图片总数" },
+    { "value": "27.0k", "label": "文章总字数" }
+  ],
+  "recentNote": {
+    "label": "LATEST WHISPER",
+    "title": "拾记絮语",
+    "hint": "留下几句闲话，几帧日常。",
+    "text": "我注意到在路上大多数开车的吧，比较贵的车不会胡乱变道，会看后视镜，反而越是便宜的车越胡吊开，后视镜选配……",
+    "date": "2026-09-24"
+  },
+  "heroPhoto": {
+    "src": "/assets/img/misc/hero.webp",
+    "caption": "MOMENTS IN BETWEEN",
+    "title": "绝美路途风景",
+    "date": "2026-08-29"
+  },
+  "pager": ["慢慢记录，也认真抵达。", "把日子过成想要的样子。", "风来的时候，记得抬头。"],
+  "travelStrip": {
+    "title": "沿途，留下的七个坐标",
+    "eyebrow": "TRACES OF A JOURNEY",
+    "items": [
+      { "title": "国庆大湾区游记", "date": "2026.10.18", "place": "深圳市", "img": "/assets/img/misc/travel-01.webp" },
+      { "title": "深圳东西冲", "date": "2026.10.09", "place": "深圳市", "img": "/assets/img/misc/travel-02.webp" },
+      { "title": "出征上迪", "date": "2026.09.10", "place": "上海市", "img": "/assets/img/misc/travel-03.webp" }
+    ]
+  },
+  "footer": {
+    "since": "2026",
+    "owner": "juhua_yu",
+    "icp": "ICP备00000000号-1",
+    "links": [
+      { "text": "写一封信", "href": "mailto:hello@example.com" },
+      { "text": "RSS", "href": "/feed.xml" }
+    ]
+  },
+  "nav": [
+    { "text": "主页", "href": "/", "key": "home" },
+    { "text": "随影", "href": "/moments.html", "key": "moments" },
+    { "text": "拾记", "href": "/journal.html", "key": "journal" },
+    { "text": "关于", "href": "/about.html", "key": "about" }
+  ]
+}

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="JUHUAYU">
+  <g fill="none" stroke="#70854b" stroke-width="2.1" stroke-linecap="round">
+    <path d="M32 8v10" />
+    <circle cx="32" cy="30" r="12" />
+    <circle cx="32" cy="30" r="4.4" fill="#b7f34a" stroke="none" />
+    <path d="M32 44v10" />
+    <path d="M20 20 14 14" />
+    <path d="M44 20 50 14" />
+    <path d="M20 40 14 46" />
+    <path d="M44 40 50 46" />
+    <path d="M12 30h-6" />
+    <path d="M58 30h-6" />
+  </g>
+  <g fill="#c9705a">
+    <circle cx="12" cy="30" r="2" />
+    <circle cx="52" cy="30" r="2" />
+  </g>
+</svg>
