@@ -85,7 +85,10 @@ function head({ title, description, extraCss = [], bodyClass = "", preload = [] 
 `;
 }
 
-const tail = (scripts = []) => `    ${scripts.map((s) => `<script src="${esc(s)}" defer></script>`).join("\n    ")}
+const tail = (scripts = [], modules = ["/assets/js/cursor.js"]) => `    ${scripts
+  .map((s) => `<script src="${esc(s)}" defer></script>`)
+  .join("\n    ")}
+    ${modules.map((m) => `<script type="module" src="${esc(m)}"></script>`).join("\n    ")}
   </body>
 </html>
 `;
